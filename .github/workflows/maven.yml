@@ -57,6 +57,7 @@ jobs:
       - name: Build docker image
         run: |
           docker build \
+          --build-arg DB_URL=${{secrets.DB_URL}} --build-arg DB_USERNAME=${{secrets.DB_USERNAME}} --build-arg DB_PASSWORD=${{secrets.DB_PASSWORD}} \
           --build-arg LOG_IP=${{secrets.LOG_IP}} --build-arg LOG_PORT=${{secrets.LOG_PORT}} --build-arg LOG_LEVEL=${{inputs.logLevel}} \
           --build-arg ENABLE_MONITOR_SYSTEM=${{inputs.enabel_monitor_system}} --build-arg MONITOR_BOT_TOKEN=${{secrets.MONITOR_BOT_TOKEN}} --build-arg MONITOR_BOT_CHAT_ID=${{secrets.MONITOR_BOT_CHAT_ID}} \
           --build-arg KAFKA_TEST=${{inputs.enabel_config_kafka_test}} --build-arg KAFKA_BOOTSTRAP_SERVER=${{secrets.KAFKA_BOOTSTRAP_SERVER}} --build-arg KAFKA_TEST_USERNAME=${{secrets.KAFKA_TEST_USERNAME}} --build-arg KAFKA_TEST_PASSWORD=${{secrets.KAFKA_TEST_PASSWORD}} \
