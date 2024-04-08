@@ -4,17 +4,12 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dattp.order.entity.BookedDish;
-import com.dattp.order.repository.BookedDishRepository;
 
 @Service
-public class BookedDishService {
-    @Autowired
-    private BookedDishRepository bookedDishRepository;
-
+public class BookedDishService extends com.dattp.order.service.Service {
     public void removeById(long id){
         bookedDishRepository.deleteById(id);
     }

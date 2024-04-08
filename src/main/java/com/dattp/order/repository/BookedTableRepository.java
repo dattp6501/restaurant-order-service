@@ -21,5 +21,5 @@ public interface BookedTableRepository extends JpaRepository<BookedTable,Long>{
     // lay tat cac thoi gian dat trong 1 khoang thoi gian cua 1 ban(hay lay cac khung thoi gian da dat cua ban)
     @Query(value="SELECT t.from_,t.to_ FROM BOOKED_TABLE t "
     +"WHERE NOT (:to_<t.from_ OR t.to_<:from_) AND t.table_id=:table_id "+" AND t.state!="+ApplicationConfig.CANCEL_STATE, nativeQuery = true)
-    public List<Object[]> findPeriodRent(@Param("from_") Date from, @Param("to_")Date to, @Param("table_id") Long tableID);
+    public List<Object[]> findPeriodRent(@Param("from_") Long from, @Param("to_")Long to, @Param("table_id") Long tableID);
 }

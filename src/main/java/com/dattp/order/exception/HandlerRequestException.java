@@ -1,6 +1,10 @@
 package com.dattp.order.exception;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,34 +15,55 @@ import com.dattp.order.dto.ResponseDTO;
 import com.fasterxml.jackson.core.JsonParseException;
 
 @RestControllerAdvice
+@Log4j2
 public class HandlerRequestException {
-    @ExceptionHandler(value =BindException.class)
+    @ExceptionHandler(value = BindException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ResponseDTO handlerBindException(BindException e){
-        return new ResponseDTO(HttpStatus.BAD_REQUEST.value(),e.getAllErrors().get(0).getDefaultMessage(),null);
+    public ResponseEntity<ResponseDTO> handlerBindException(BindException e){
+        return ResponseEntity
+          .status(HttpStatus.BAD_REQUEST)
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(new ResponseDTO(HttpStatus.BAD_REQUEST.value(),e.getAllErrors().get(0).getDefaultMessage(),null));
     }
 
-    @ExceptionHandler(value =BadRequestException.class)
+    @ExceptionHandler(value = BadRequestException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ResponseDTO handlerBindException(BadRequestException e){
-        return new ResponseDTO(HttpStatus.BAD_REQUEST.value(),e.getMessage(),null);
+    public ResponseEntity<ResponseDTO> handlerBindException(BadRequestException e){
+        return ResponseEntity
+          .status(HttpStatus.BAD_REQUEST)
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(new ResponseDTO(HttpStatus.BAD_REQUEST.value(), e.getMessage(),null));
     }
 
-    @ExceptionHandler(value =MethodArgumentNotValidException.class)
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ResponseDTO handlerBindException(MethodArgumentNotValidException e){
-        return new ResponseDTO(HttpStatus.BAD_REQUEST.value(),e.getAllErrors().get(0).getDefaultMessage(),null);
+    public ResponseEntity<ResponseDTO> handlerBindException(MethodArgumentNotValidException e){
+        return ResponseEntity
+          .status(HttpStatus.BAD_REQUEST)
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(new ResponseDTO(HttpStatus.BAD_REQUEST.value(),e.getAllErrors().get(0).getDefaultMessage(),null));
     }
 
     @ExceptionHandler(value = JsonParseException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ResponseDTO handlerJSONParseException(JsonParseException e){
-        return new ResponseDTO(HttpStatus.BAD_REQUEST.value(), e.getMessage(),null);
+    public ResponseEntity<ResponseDTO> handlerJSONParseException(JsonParseException e){
+        return ResponseEntity
+          .status(HttpStatus.BAD_REQUEST)
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(new ResponseDTO(HttpStatus.BAD_REQUEST.value(), e.getMessage(),null));
     }
 
-    @ExceptionHandler(value =Exception.class)
+    @ExceptionHandler(value = HttpMessageNotReadableException.class)
+    public void handlerException(HttpMessageNotReadableException e){
+        log.error("==================> handlerException:HttpMessageNotReadableException:{}", e.getMessage());
+    }
+
+    @ExceptionHandler(value = Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseDTO handlerException(Exception e){
-        return new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(),e.getMessage(),null);
+    public ResponseEntity<ResponseDTO> handlerException(Exception e){
+        return ResponseEntity
+          .status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(),e.getMessage(),null));
     }
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
@@ -14,13 +13,9 @@ import com.dattp.order.dto.PeriodTimeResponseDTO;
 import com.dattp.order.dto.PeriodsTimeBookedTableDTO;
 import com.dattp.order.entity.BookedTable;
 import com.dattp.order.exception.NotfoundException;
-import com.dattp.order.repository.BookedTableRepository;
 
 @Service
-public class BookedTableService {
-    @Autowired
-    private BookedTableRepository bookedTableRepository;
-
+public class BookedTableService extends com.dattp.order.service.Service {
     public List<PeriodsTimeBookedTableDTO> getPeriadrentAllTable(Date from, Date to, Pageable pageable){
         List<PeriodsTimeBookedTableDTO> list = new ArrayList<>();
         int lengthCur = -1;
@@ -61,9 +56,9 @@ public class BookedTableService {
         return false;
     }
 
-    public List<Pair<Date,Date>> getPeriodRentTable(Date from, Date to, Long tableId){
+    public List<Pair<Date,Date>> getPeriodRentTable(Long from, Long to, Long tableId){
         List<Pair<Date,Date>> list = new ArrayList<>();
-        bookedTableRepository.findPeriodRent(from, to, tableId).stream()
+        bookedTableRepository.findPeriodRent(from, to, tableId)
         .forEach((columns)->{
             list.add(Pair.of((Date)columns[0], (Date)columns[1]));
         });

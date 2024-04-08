@@ -1,32 +1,28 @@
-//package com.dattp.order.KafkaListeners;
-//
-//import java.util.ArrayList;
-//
-//import org.springframework.beans.BeanUtils;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.kafka.annotation.KafkaListener;
-//import org.springframework.messaging.handler.annotation.Payload;
-//import org.springframework.stereotype.Component;
-//import org.springframework.transaction.annotation.Transactional;
-//
-//import com.dattp.order.dto.BookingResponseDTO;
-//import com.dattp.order.entity.BookedDish;
-//import com.dattp.order.entity.Booking;
-//import com.dattp.order.service.BookingService;
-//
-//@Component
-//public class BookingKafkaListener {
-//    @Autowired
-//    private BookingService bookingService;
-//    // listen message from checkOrder topic
-//    @KafkaListener(topics = "checkOrder", groupId="group1", containerFactory = "factoryBooking")
-//    @Transactional
-//    public void listenerResultCreateBookingTopic(@Payload BookingResponseDTO bookingResponse){
-//        // ket qua nhan vao la thong tin cua ban sau khi productservice kiem tra
-//        // lang nghe su kien kiem tra don dat hang
-//        bookingService.checkAndUpdateBooking(bookingResponse);
-//    }
-//    // listen message result check info dish
+package com.dattp.order.KafkaListeners;
+
+import com.dattp.order.config.kafka.TopicKafkaConfig;
+import com.dattp.order.dto.booking.BookingResponseDTO;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Component;
+import org.springframework.kafka.annotation.KafkaListener;
+@Component
+@Log4j2
+public class BookingKafkaListener extends com.dattp.order.KafkaListeners.KafkaListener{
+    // listen process booking
+    @KafkaListener(topics = TopicKafkaConfig.PROCESS_BOOKING_TOPIC, groupId="com.dattp.restaurant.order.process_order", containerFactory = "factoryBooking")
+    public void listenerResultCreateBookingTopic(@Payload BookingResponseDTO dto, Acknowledgment acknowledgment){
+        // ket qua nhan vao la thong tin cua ban sau khi productservice kiem tra
+        try {
+            bookingService.checkAndUpdateBooking(dto);
+            acknowledgment.acknowledge();
+        }catch (Exception e){
+            log.debug("=====================>  listenerResultCreateBookingTopic:Exception:{}", e.getMessage());
+        }
+
+    }
+    // listen message result check info dish
 //    @KafkaListener(topics = "resultCheckBookedDish", groupId = "group1", containerFactory = "factoryBooking")
 //    @Transactional
 //    public void listenerResultCheckBookedDish(BookingResponseDTO bookingResponse){
@@ -46,4 +42,4 @@
 //    public void listenerPaymentOrderSuccess(Long bookingId){
 //        bookingService.updatePaid(bookingId, true);
 //    }
-//}
+}

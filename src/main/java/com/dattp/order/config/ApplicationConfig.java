@@ -1,6 +1,15 @@
 package com.dattp.order.config;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+
+@Configuration
 public class ApplicationConfig {
+    @Bean
+    public RestTemplate cRestTemplate(){
+        return new RestTemplate();
+    }
     // entity state
     public static final int DEFAULT_STATE = -1;// chua co trang thai
     public static final int NOT_FOUND_STATE = 0;// khong tim thay

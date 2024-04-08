@@ -15,6 +15,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "BOOKED_DISH")
 @Setter
@@ -51,7 +53,7 @@ public class BookedDish {
         BookedDish other = (BookedDish) obj;
         if(this.id == other.id) return this.id == other.id;
         // dish was placed on the menu
-        return this.booking.getId()==other.booking.getId()&&this.dishId==other.dishId;
+        return Objects.equals(this.booking.getId(), other.booking.getId()) &&this.dishId==other.dishId;
     }
 
 }

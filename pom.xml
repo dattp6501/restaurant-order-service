@@ -47,14 +47,14 @@
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-config</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.cloud</groupId>-->
+<!--			<artifactId>spring-cloud-starter-config</artifactId>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter-actuator</artifactId>-->
+<!--		</dependency>-->
 
 <!--		<dependency>-->
 <!--			<groupId>org.springframework.boot</groupId>-->
@@ -133,10 +133,10 @@
 
 		
 
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.kafka</groupId>-->
-<!--			<artifactId>spring-kafka</artifactId>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+		</dependency>
 <!--		<dependency>-->
 <!--			<groupId>org.springframework.kafka</groupId>-->
 <!--			<artifactId>spring-kafka-test</artifactId>-->
@@ -159,6 +159,63 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+
+		<!--	REDIS	-->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+			<version>2.3.3.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>io.lettuce</groupId>
+			<artifactId>lettuce-core</artifactId>
+			<version>6.3.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>5.0.2</version>
+			<type>jar</type>
+		</dependency>
+
+
+		<!--json-->
+		<!--		<dependency>-->
+		<!--			<groupId>com.google.code.gson</groupId>-->
+		<!--			<artifactId>gson</artifactId>-->
+		<!--			<version>2.10.1</version>-->
+		<!--		</dependency>-->
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-parameter-names</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+		</dependency>
+
+		<!--        SWAGGER		-->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<!--		-->
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
