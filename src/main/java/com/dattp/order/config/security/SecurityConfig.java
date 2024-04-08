@@ -22,11 +22,12 @@ public class SecurityConfig{
     private JWTAuthenticationFilter jwtAuthenticationFilter;
 
     private static final String[] publicPath = {
-       "/swagger-resources/**",
-       "/swagger-ui.html",
-       "/v2/api-docs",
-       "/webjars/**",
-       "/swagger-ui/**",
+        "/swagger-resources/**",
+        "/swagger-ui.html",
+        "/v2/api-docs",
+        "/webjars/**",
+        "/swagger-ui/**",
+        "/isRunning"
     };
 
 
