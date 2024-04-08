@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 @Service
 @Log4j2
 public class TelegramService extends com.dattp.order.service.Service {
-    @Value(("${telegram.enable_monitor_system}"))
+    @Value("${telegram.enable_monitor_system}")
     private Boolean ENABLE_MONITOR_SYSTEM;
 
     @Value("${telegram.monitor_bot_token}")
-    private String monitorBotToken;
+    private String MONITOR_BOT_TOKEN;
 
     @Value("${telegram.monitor_bot_chat_id}")
-    private String monitorBatChatId;
+    private String MONITOR_BOT_CHAT_ID;
 
     @Async("taskExecutor")
     public void sendNotificatonMonitorSystem(String message){
@@ -31,11 +31,11 @@ public class TelegramService extends com.dattp.order.service.Service {
             request.addProperty("text", "\uD83D\uDED2 "+message);
             request.addProperty("parse_mode", "HTML");
             request.addProperty("disable_web_page_preview", false);
-            request.addProperty("chat_id", monitorBatChatId);
+            request.addProperty("chat_id", MONITOR_BOT_CHAT_ID);
 
             HttpEntity<Object> requestEntity = new HttpEntity<>(request.toString(), headers);
 
-            String url = String.format("https://api.telegram.org/bot%s/sendMessage", monitorBotToken);
+            String url = String.format("https://api.telegram.org/bot%s/sendMessage", MONITOR_BOT_TOKEN);
             restTemplate.postForObject(url, requestEntity, Object.class);
         }
     }
