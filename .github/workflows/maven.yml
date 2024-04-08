@@ -16,10 +16,12 @@ on:
         default: 'debug'
         type: choice
         options:
-          - error
-          - warning
-          - info
+          - trace
           - debug
+          - info
+          - warning
+          - error
+          - fatal
       enable_config_kafka_test:
         description: 'Enable config kafka test'
         required: true
