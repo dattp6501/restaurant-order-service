@@ -10,6 +10,7 @@ import com.dattp.order.config.redis.RedisKeyConfig;
 import com.dattp.order.dto.bookedtable.BookedTableResponseDTO;
 import com.dattp.order.dto.booking.BookingResponseDTO;
 import com.dattp.order.entity.BookedTable;
+import com.dattp.order.entity.state.BookedTableState;
 import com.dattp.order.entity.state.BookingState;
 import com.dattp.order.exception.BadRequestException;
 import com.dattp.order.utils.DateUtils;
@@ -55,7 +56,7 @@ public class BookingService extends com.dattp.order.service.Service {
             booking.getBookedTables().forEach(e->{
                 BookedTableResponseDTO bt = mapTable.get(e.getTableId());
                 e.setName(bt.getName());
-                e.setState(bt.getState());
+                e.setState(bt.getState().equals(BookedTableState.DELETE)?BookedTableState.NOT_FOUND:BookedTableState.PROCESSING);
                 e.setPrice(bt.getPrice());
                 e.setUpdateAt(DateUtils.getCurrentMils());
             });
