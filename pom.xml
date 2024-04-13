@@ -216,6 +216,19 @@
 			<version>3.0.0</version>
 		</dependency>
 		<!--		-->
+
+		<!-- CONVERTER -->
+<!--		<dependency>-->
+<!--			<groupId>org.hibernate</groupId>-->
+<!--			<artifactId>hibernate-core</artifactId>-->
+<!--			<version>5.4.24.Final</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.hibernate</groupId>-->
+<!--			<artifactId>hibernate-entitymanager</artifactId>-->
+<!--			<version>5.4.24.Final</version>-->
+<!--		</dependency>-->
+		<!--		-->
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

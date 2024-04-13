@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.dattp.order.entity.state.BookedDishState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
@@ -23,23 +24,29 @@ import java.util.Objects;
 @Getter
 public class BookedDish {
     @Column(name = "state")
-    private int state;
+    private BookedDishState state;
     
     @Column(name = "id")
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name="dish_id")
-    private long dishId;
+    private Long dishId;
 
     @Column(name="name")
     private String name;
 
     @Column(name="total")
-    private int total;
+    private Integer total;
 
     @Column(name="price")
-    private float price;
+    private Float price;
+
+    @Column(name = "create_at")
+    private Long createAt;
+
+    @Column(name = "update_at")
+    private Long updateAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booking_id")
@@ -50,8 +57,9 @@ public class BookedDish {
 
     @Override
     public boolean equals(Object obj) {
+        if(!(obj instanceof BookedDish)) return false;
         BookedDish other = (BookedDish) obj;
-        if(this.id == other.id) return this.id == other.id;
+        if(Objects.equals(this.id, other.id)) return Objects.equals(this.id, other.id);
         // dish was placed on the menu
         return Objects.equals(this.booking.getId(), other.booking.getId()) &&this.dishId==other.dishId;
     }

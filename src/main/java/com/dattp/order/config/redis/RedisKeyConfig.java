@@ -46,5 +46,12 @@ public class RedisKeyConfig {
   public static String genKeyCartTable(Long userId){
     return PREFIX_CART_TABLE + userId;
   }
+  //================================== ORDER = =========================================
+  public static String genKeyListOrder(Long userId){
+    return PREFIX_ORDER + userId;
+  }
+  public static String genKeyOrderDetail(Long userId, Long bookingId){
+    return PREFIX_ORDER + userId + ":" + bookingId;
+  }
 
 }

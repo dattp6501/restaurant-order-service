@@ -2,6 +2,7 @@ package com.dattp.order.service;
 
 import com.dattp.order.repository.*;
 import com.dattp.order.storage.BookingStorage;
+import com.dattp.order.storage.BookingTransactionStorage;
 import com.dattp.order.storage.TokenStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -23,5 +24,6 @@ public class Service {
 
   @Autowired @Lazy protected TokenStorage tokenStorage;
   @Autowired @Lazy protected BookingStorage bookingStorage;
+  @Autowired @Lazy protected BookingTransactionStorage bookingTransactionStorage;
 
 }

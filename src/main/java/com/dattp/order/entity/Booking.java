@@ -61,7 +61,7 @@ public class Booking {
     @Column(name = "update_at")
     private Long updateAt = DateUtils.getCurrentMils();
 
-    @OneToMany(mappedBy = "booking", cascade ={CascadeType.ALL}, fetch=FetchType.LAZY )
+    @OneToMany(mappedBy = "booking", cascade ={CascadeType.ALL})
     private List<BookedTable> bookedTables;
 
     @OneToMany(mappedBy="booking", cascade={CascadeType.ALL})

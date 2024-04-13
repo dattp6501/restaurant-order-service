@@ -1,99 +1,82 @@
 package com.dattp.order.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.dattp.order.anotation.docapi.AddAuthorizedDocAPI;
+import com.dattp.order.dto.ResponseDTO;
+import com.dattp.order.entity.state.BookingState;
+import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.security.RolesAllowed;
+import java.time.LocalDateTime;
 
 
 @RestController
 @RequestMapping("/api/order/manage/booking")
 public class BookingManagerController extends Controller{
 
-//    @GetMapping("")
-//    @AddAuthorizedDocAPI
-//    @RolesAllowed({"ROLE_ORDER_UPDATE", "ROLE_ORDER_UPDATE"})
-//    public ResponseEntity<ResponseDTO> getByCustemerId(@RequestParam("from") @DateTimeFormat(pattern="HH:mm:ss dd/MM/yyyy") Date from, @RequestParam("to") @DateTimeFormat(pattern="HH:mm:ss dd/MM/yyyy") Date to, Pageable pageable){
-//        List<BookingResponseDTO> list = new ArrayList<>();
-//        bookingService.getAllByFromAndTo(from, to, pageable).forEach((bk)->{
-//            BookingResponseDTO BkResp = new BookingResponseDTO();
-//            BeanUtils.copyProperties(bk, BkResp);
-//            // table
-//            BkResp.setBookedTables(new ArrayList<>());
-//            bk.getBookedTables().forEach((t)->{
-//                BookedTableResponseDTO BTResp = new BookedTableResponseDTO();
-//                BeanUtils.copyProperties(t, BTResp);
-//                BkResp.getBookedTables().add(BTResp);
-//            });
-//            list.add(BkResp);
-//        });
-//        return ResponseEntity.ok().body(
-//            new ResponseDTO(
-//                HttpStatus.OK.value(),
-//                "Thành công",
-//                list
-//            )
-//        );
-//    }
+    @GetMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @AddAuthorizedDocAPI
+    @RolesAllowed({"ROLE_ORDER_UPDATE", "ROLE_ORDER_UPDATE"})
+    public ResponseEntity<ResponseDTO> getByCustemerId(
+        @RequestParam(value = "id", required = false) Long id,
+        @RequestParam(value = "State", required = false) BookingState state,
+        @RequestParam(value = "customerName", required = false) String customerName,
+        @RequestParam(value = "paid", required = false) Boolean paid,
+        @RequestParam(value = "from") @DateTimeFormat(pattern="HH:mm:ss dd/MM/yyyy") LocalDateTime from,
+        @RequestParam(value = "to", required = false) @DateTimeFormat(pattern="HH:mm:ss dd/MM/yyyy") LocalDateTime to,
+        Pageable pageable
+    ){
+        return ResponseEntity.ok(
+            new ResponseDTO(
+                HttpStatus.OK.value(),
+                "Thành công",
+                bookingService.findAllFromDB(id, state, from, to, customerName, paid, pageable)
+            )
+        );
+    }
 
-//    @GetMapping("/{booking_id}")
-//    @AddAuthorizedDocAPI
-//    @RolesAllowed({"ROLE_ORDER_UPDATE", "ROLE_ORDER_UPDATE"})
-//    public ResponseEntity<ResponseDTO> getBookingDetail(@PathVariable("booking_id") Long id){
-//        BookingResponseDTO bkResp = new BookingResponseDTO();
-//        Booking booking = bookingService.getByID(id);
-//        BeanUtils.copyProperties(booking, bkResp);
-//        // table
-//        bkResp.setBookedTables(new ArrayList<>());
-//        booking.getBookedTables().forEach((t)->{
-//            BookedTableResponseDTO BTR = new BookedTableResponseDTO();
-//            BeanUtils.copyProperties(t, BTR);
-//            bkResp.getBookedTables().add(BTR);
-//        });
-//        // dish
-//        bkResp.setDishs(new ArrayList<>());
-//        if(!booking.getDishs().isEmpty()){
-//            booking.getDishs().forEach((d)->{
-//                BookedDishResponseDTO BDR = new BookedDishResponseDTO();
-//                BeanUtils.copyProperties(d, BDR);
-//                bkResp.getDishs().add(BDR);
-//            });
-//        }
-//        return ResponseEntity.ok().body(
-//            new ResponseDTO(
-//                HttpStatus.OK.value(),
-//                "Thành công",
-//                bkResp
-//            )
-//        );
-//    }
+    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @AddAuthorizedDocAPI
+    @RolesAllowed({"ROLE_ORDER_UPDATE", "ROLE_ORDER_UPDATE"})
+    public ResponseEntity<ResponseDTO> getBookingDetail(@PathVariable("id") Long id){
+        return ResponseEntity.ok(
+            new ResponseDTO(
+                HttpStatus.OK.value(),
+                "Thành công",
+                bookingService.getBookingDetailFromDB(id)
+            )
+        );
+    }
+    @PostMapping(value = "/{id}/cancel", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @AddAuthorizedDocAPI
+    @RolesAllowed({"ROLE_ORDER_UPDATE", "ROLE_ORDER_UPDATE"})
+    public ResponseEntity<ResponseDTO> cancelBooking(@PathVariable Long id){
+        bookingService.cancelBooking(id);
+        return ResponseEntity.ok(
+            new ResponseDTO(
+                HttpStatus.OK.value(),
+                "Thành công",
+                null
+            )
+        );
+    }
 //
-//    @PostMapping("/cancel_booking")
-//    @AddAuthorizedDocAPI
-//    @RolesAllowed({"ROLE_ORDER_UPDATE", "ROLE_ORDER_UPDATE"})
-//    public ResponseEntity<ResponseDTO> cancelBooking(@RequestBody HashMap<String,String> req) throws Exception{
-//        Long id = Long.parseLong(req.get("id"));
-//        bookingService.cancelBooking(id);
-//        return ResponseEntity.ok().body(
-//            new ResponseDTO(
-//                HttpStatus.OK.value(),
-//                "Thành công",
-//                null
-//            )
-//        );
-//    }
-//
-//    @PostMapping("/confirm_booking")
-//    @AddAuthorizedDocAPI
-//    @RolesAllowed({"ROLE_ORDER_UPDATE", "ROLE_ORDER_UPDATE"})
-//    public ResponseEntity<ResponseDTO> confirmBooking(@RequestBody HashMap<String,String> req) throws Exception{
-//        Long id = Long.parseLong(req.get("id"));
-//        bookingService.confirmBooking(id);
-//        return ResponseEntity.ok().body(
-//            new ResponseDTO(
-//                HttpStatus.OK.value(),
-//                "Thành công",
-//                null
-//            )
-//        );
-//    }
+    @PostMapping("{id}/confirm")
+    @AddAuthorizedDocAPI
+    @RolesAllowed({"ROLE_ORDER_UPDATE", "ROLE_ORDER_UPDATE"})
+    public ResponseEntity<ResponseDTO> confirmBooking(@PathVariable Long id){
+        bookingService.confirmBooking(id);
+        return ResponseEntity.ok().body(
+            new ResponseDTO(
+                HttpStatus.OK.value(),
+                "Thành công",
+                null
+            )
+        );
+    }
 
 }

@@ -72,7 +72,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter{
             }
             */
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);//lưu lại các thông tin quyền của người dùng hiện tại
-            filterChain.doFilter(mutableRequest, response);
         } catch (Exception e) {
             log.debug("======> JWTAuthenticationFilter::doFilterInternal::exception::{}", e.getMessage());
         }

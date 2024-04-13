@@ -4,7 +4,10 @@ import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 import com.dattp.order.anotation.docapi.AddAuthorizedDocAPI;
+import com.dattp.order.entity.state.BookingState;
 import com.dattp.order.utils.DateUtils;
+import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,8 @@ import com.dattp.order.dto.booking.BookingCreateDTO;
 import com.dattp.order.dto.ResponseDTO;
 import com.dattp.order.entity.Booking;
 import com.dattp.order.exception.BadRequestException;
+
+import java.time.LocalDateTime;
 
 
 @RestController
@@ -44,77 +49,36 @@ public class BookingUserController extends Controller{
           )
         );
     }
+    @GetMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @AddAuthorizedDocAPI
+    @RolesAllowed({"ROLE_ORDER_ACCESS"})
+    public ResponseEntity<?> getByCustemerId(
+        @RequestParam(value = "id", required = false) Long id,
+        @RequestParam(value = "state", required = false) BookingState state,
+        @RequestParam(value = "from", required = false) @DateTimeFormat(pattern="HH:mm:ss dd/MM/yyyy") LocalDateTime from,
+        @RequestParam(value = "to", required = false) @DateTimeFormat(pattern="HH:mm:ss dd/MM/yyyy") LocalDateTime to,
+        @RequestParam(value = "paid", required = false) Boolean paid,
+        Pageable pageable
+    ){
+        return ResponseEntity.ok(
+          new ResponseDTO(
+            HttpStatus.OK.value(),
+            "Thành công",
+            bookingService.findAllFromDBAndCache(id, state, from, to, paid, pageable)
+          )
+        );
+    }
 
-//    @PostMapping(value = "/dish", produces = {MediaType.APPLICATION_JSON_VALUE})
-//    @AddAuthorizedDocAPI
-//    @RolesAllowed({"ROLE_ORDER_NEW"})
-//    public ResponseEntity<ResponseDTO> addDish(@RequestBody @Valid BookingDishRequestDTO bookingDishRequestDTO){
-////        List<BookedDish> dishs = new ArrayList<>();
-////        bookingDishRequestDTO.getDishs().forEach((dResp)->{
-////            BookedDish dish = new BookedDish();
-////            BeanUtils.copyProperties(dResp, dish);
-////            dish.setState(ApplicationConfig.DEFAULT_STATE);
-////            dishs.add(dish);
-////        });
-////        bookingService.addDishToBooking(bookingDishRequestDTO.getId(), dishs);
-//        return ResponseEntity.ok(
-//          new ResponseDTO(
-//            HttpStatus.OK.value(),
-//            "Thành công",
-//            null
-//          )
-//        );
-//    }
-    
-    // get all booking of user
-//    @GetMapping("")
-//    @AddAuthorizedDocAPI
-//    @RolesAllowed({"ROLE_ORDER_ACCESS"})
-//    public ResponseEntity<?> getByCustemerId(Pageable pageable){
-//        List<BookingResponseDTO> list = bookingService.getByCustemerId(2, pageable).stream()
-//          .map(BookingResponseDTO::new)
-//          .collect(Collectors.toList());
-//
-//        return ResponseEntity.ok(
-//          new ResponseDTO(
-//            HttpStatus.OK.value(),
-//            "Thành công",
-//            list
-//          )
-//        );
-//    }
-
-//    @GetMapping("/{booking_id}")
-//    @AddAuthorizedDocAPI
-//    @RolesAllowed({"ROLE_ORDER_ACCESS"})
-//    public ResponseEntity<ResponseDTO> getBookingDetail(@PathVariable("booking_id") Long id) throws Exception{
-//        long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
-//        BookingResponseDTO bkResp = new BookingResponseDTO();
-//        Booking booking = bookingService.getByID(id);
-//        if(userId != booking.getCustomerId()) throw new Exception("Bạn không có lịch đặt này");
-//        BeanUtils.copyProperties(booking, bkResp);
-//        // table
-//        bkResp.setBookedTables(new ArrayList<>());
-//        booking.getBookedTables().forEach((t)->{
-//            BookedTableResponseDTO BTR = new BookedTableResponseDTO();
-//            BeanUtils.copyProperties(t, BTR);
-//            bkResp.getBookedTables().add(BTR);
-//        });
-//        // dish
-//        bkResp.setDishs(new ArrayList<>());
-//        if(!booking.getDishs().isEmpty()){
-//            booking.getDishs().forEach((d)->{
-//                BookedDishResponseDTO BDR = new BookedDishResponseDTO();
-//                BeanUtils.copyProperties(d, BDR);
-//                bkResp.getDishs().add(BDR);
-//            });
-//        }
-//        return ResponseEntity.ok().body(
-//            new ResponseDTO(
-//                HttpStatus.OK.value(),
-//                "Thành công",
-//                bkResp
-//            )
-//        );
-//    }
+    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @AddAuthorizedDocAPI
+    @RolesAllowed({"ROLE_ORDER_ACCESS"})
+    public ResponseEntity<ResponseDTO> getBookingDetail(@PathVariable("id") Long id){
+        return ResponseEntity.ok().body(
+            new ResponseDTO(
+                HttpStatus.OK.value(),
+                "Thành công",
+                bookingService.getBookingDetailFromDBAndCache(id)
+            )
+        );
+    }
 }

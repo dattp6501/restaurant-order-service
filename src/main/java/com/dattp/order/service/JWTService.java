@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class JWTService {
@@ -32,7 +33,7 @@ public class JWTService {
   }
 
   public String getMail(){
-    return getDetails().get("mail").toString();
+    return Objects.toString(getDetails().get("email"), null);
   }
 
   @SuppressWarnings(value="unchecked")

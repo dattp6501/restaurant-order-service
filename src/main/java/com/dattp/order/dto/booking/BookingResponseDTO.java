@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 import com.dattp.order.dto.bookeddish.BookedDishResponseDTO;
 import com.dattp.order.dto.bookedtable.BookedTableResponseDTO;
 import com.dattp.order.entity.Booking;
+import com.dattp.order.entity.state.BookingState;
+import com.dattp.order.pojo.booking.BookingOverview;
 import com.dattp.order.utils.DateUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -24,9 +26,9 @@ public class BookingResponseDTO {
 
   private String custemerFullname;
 
-  private int state;
+  private BookingState state;
 
-  private boolean paid;
+  private Boolean paid;
 
   @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
   private LocalDateTime from;
@@ -34,7 +36,7 @@ public class BookingResponseDTO {
   @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
   private LocalDateTime to;
 
-  private float deposits;
+  private Float deposits;
 
   private String description;
 
@@ -52,6 +54,10 @@ public class BookingResponseDTO {
 
   public BookingResponseDTO(Booking bk){
     copyProperties(bk);
+  }
+
+  public void copyProperties(Booking bk){
+    BeanUtils.copyProperties(bk, this);
     this.from = DateUtils.convertToLocalDateTime(bk.getFrom());
     this.to = DateUtils.convertToLocalDateTime(bk.getTo());
     this.createAt = DateUtils.convertToLocalDateTime(bk.getCreateAt());
@@ -62,9 +68,21 @@ public class BookingResponseDTO {
           .map(BookedTableResponseDTO::new)
           .collect(Collectors.toList());
     }
+    //booked dish
+    if(Objects.nonNull(bk.getDishs())){
+      this.dishs = bk.getDishs().stream()
+          .map(BookedDishResponseDTO::new)
+          .collect(Collectors.toList());
+    }
   }
 
-  public void copyProperties(Booking bk){
-    BeanUtils.copyProperties(bk, this);
+  public BookingResponseDTO(BookingOverview bo){
+    copyProperties(bo);
+  }
+  public void copyProperties(BookingOverview bo){
+    BeanUtils.copyProperties(bo, this);
+    this.from = DateUtils.convertToLocalDateTime(bo.getFrom());
+    this.to = DateUtils.convertToLocalDateTime(bo.getTo());
+    this.createAt = DateUtils.convertToLocalDateTime(bo.getCreateAt());
   }
 }
