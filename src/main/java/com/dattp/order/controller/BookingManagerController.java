@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/order/manage/booking")
+@CrossOrigin(origins = "*")
 public class BookingManagerController extends Controller{
 
     @GetMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE})

@@ -92,7 +92,6 @@ public class BookingStorage extends Storage{
   }
 
   public Page<Booking> findAll(Long id, BookingState state, Long from, Long to, Long CustomerId, String custemerFullname, Boolean paid, Pageable pageable){
-    if(Objects.isNull(state)) state = BookingState.PROCESSING;
     return bookingRepository.findAll(specificationBooking(id, state, from, to, CustomerId, custemerFullname, paid), pageable);
   }
 
@@ -101,6 +100,7 @@ public class BookingStorage extends Storage{
       List<Predicate> predicates = new ArrayList<>();
       if(Objects.nonNull(id)) predicates.add(criteriaBuilder.equal(root.get("id"), id));
       if(Objects.nonNull(state)) predicates.add(criteriaBuilder.equal(root.get("state"), state));
+      else predicates.add(criteriaBuilder.notEqual(root.get("state"), BookingState.DELETE));
       if(Objects.nonNull(from)) predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("from"), from));
       if(Objects.nonNull(to)) predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("to"), to));
       if(Objects.nonNull(CustomerId)) predicates.add(criteriaBuilder.equal(root.get("CustomerId"), CustomerId));
