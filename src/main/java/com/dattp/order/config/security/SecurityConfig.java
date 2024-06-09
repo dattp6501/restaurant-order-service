@@ -24,7 +24,9 @@ public class SecurityConfig {
         "/v2/api-docs",
         "/webjars/**",
         "/swagger-ui/**",
-        "/isRunning"
+        "/isRunning",
+        "/api/order/user/**",
+        "/api/order/manage/**"
     };
 
 
