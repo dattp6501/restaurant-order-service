@@ -16,8 +16,12 @@ public class BookedTableCreateDTO {
     @JsonProperty("id")
     private Long tableId;
 
-//    @NotNull(message = "Tên bàn(name) không được để trống")
+    @NotNull(message = "Tên bàn(name) không được để trống")
     private String name;
 
+    @NotNull(message = "price không được để trống")
     private Float price;
+
+    @NotNull(message = "image không được để trống")
+    private String image;
 }

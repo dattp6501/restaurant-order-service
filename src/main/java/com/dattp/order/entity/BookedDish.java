@@ -36,6 +36,9 @@ public class BookedDish {
     @Column(name="name")
     private String name;
 
+    @Column(name = "imege")
+    private String image;
+
     @Column(name="total")
     private Integer total;
 

@@ -14,16 +14,20 @@ public class KafkaService {
     @Autowired @Lazy private KafkaTemplate<String, BookingResponseDTO> kafkaTemplateBooking;
 
     @Async("taskExecutor")
-    public void send(String topic, Object data){
+    public boolean send(String topic, Object data){
         try {
-            if(data instanceof BookingResponseDTO) kafkaTemplateBooking.send(topic, (BookingResponseDTO) data);
-
-
-
-            else log.debug("======> KafkaService::send::{}::{} NOT CONFIG SEND KAFKA!!!", topic, data);
+            if(data instanceof BookingResponseDTO){
+                kafkaTemplateBooking.send(topic, (BookingResponseDTO) data);
+            }
+            else{
+                log.debug("======> KafkaService::send::{}::{} NOT CONFIG SEND KAFKA!!!", topic, data);
+                return false;
+            }
             log.debug("======> KafkaService::send::{}::{} SUCCESS!!!", topic, data);
+            return true;
         }catch (Exception e){
             log.debug("======> KafkaService::send::{}::{}::Exception:{}",topic, data, e.getMessage());
+            return false;
         }
     }
 }

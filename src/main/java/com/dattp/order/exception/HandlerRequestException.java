@@ -68,7 +68,7 @@ public class HandlerRequestException {
         log.error("==================> handlerException:HttpMessageNotReadableException:{}", e.getMessage());
     }
 
-    @ExceptionHandler(value = Exception.class)
+    @ExceptionHandler(value = {Exception.class, InternalServerException.class})
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<ResponseDTO> handlerException(Exception e){
         return ResponseEntity
