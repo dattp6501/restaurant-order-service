@@ -72,7 +72,7 @@ public class BookingService extends com.dattp.order.service.Service {
         redisService.deleteHashs(
             RedisKeyConfig.genKeyCartTable(newBooking.getCustomerId()),
             newBooking.getBookedTables().stream()
-                .map(e -> e.getId().toString())
+                .map(e -> e.getTableId().toString())
                 .collect(Collectors.toList())
         );
         //response
