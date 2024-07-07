@@ -1,5 +1,6 @@
 package com.dattp.order.storage;
 
+import com.dattp.order.config.redis.RedisKeyConfig;
 import com.dattp.order.entity.Booking;
 import com.dattp.order.entity.state.BookedDishState;
 import com.dattp.order.entity.state.BookedTableState;
@@ -24,12 +25,18 @@ import java.util.Objects;
 
 @Component
 public class BookingStorage extends Storage {
+    private final long TIME_CANCEL_BOOKING_MILLS = 60 * 60 * 1000;
+
+
+    //CUSTOMER
+    
+
     @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
     public Booking save(Booking bk) {
+        redisService.delete(RedisKeyConfig.genKeyListOrder(bk.getCustomerId()));
         return bookingRepository.save(bk);
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
     public Booking cancel(Booking booking) {
         //
         booking.setState(BookingState.CANCEL);
@@ -46,7 +53,8 @@ public class BookingStorage extends Storage {
                 bd.setUpdateAt(DateUtils.getCurrentMils());
             });
         }
-        return this.save(booking);
+        redisService.delete(RedisKeyConfig.genKeyListOrder(booking.getCustomerId()));
+        return bookingRepository.save(booking);
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
@@ -67,6 +75,10 @@ public class BookingStorage extends Storage {
             });
         }
         return this.save(booking);
+    }
+
+    public List<Long> findAllNotPaid() {
+        return bookingRepository.findAllNotPaid(DateUtils.getCurrentMils() - TIME_CANCEL_BOOKING_MILLS, BookingState.CANCEL.toString());
     }
 
     public Booking findById(Long id) {

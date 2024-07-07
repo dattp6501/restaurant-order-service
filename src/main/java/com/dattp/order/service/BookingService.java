@@ -15,6 +15,8 @@ import com.dattp.order.pojo.booking.BookingOverview;
 import com.dattp.order.pojo.user.UserOverview;
 import com.dattp.order.utils.DateUtils;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -32,6 +34,10 @@ import java.util.stream.Collectors;
 @Service
 @Log4j2
 public class BookingService extends com.dattp.order.service.Service {
+    @Autowired
+    @Lazy
+    private BookingService self;
+
     //=============================================CUSTOMER
     public List<BookingResponseDTO> findAllFromDBAndCache(Long id, BookingState state, LocalDateTime from, LocalDateTime to, Boolean paid, Pageable pageable) {
         String key = RedisKeyConfig.genKeyListOrder(jwtService.getUserId());
@@ -68,16 +74,16 @@ public class BookingService extends com.dattp.order.service.Service {
     public BookingResponseDTO save(Booking booking) {
         //save
         Booking newBooking = bookingStorage.save(booking);
-        //delete table in cart
+        //delete dish in cart
         redisService.deleteHashs(
-            RedisKeyConfig.genKeyCartTable(newBooking.getCustomerId()),
-            newBooking.getBookedTables().stream()
-                .map(e -> e.getTableId().toString())
+            RedisKeyConfig.genKeyCartDish(newBooking.getCustomerId()),
+            newBooking.getDishs().stream()
+                .map(e -> e.getDishId().toString())
                 .collect(Collectors.toList())
         );
         //response
         BookingResponseDTO resp = new BookingResponseDTO(newBooking);
-        //send kafka -> check table
+        //send kafka -> check info
         if (!kafkaService.send(TopicKafkaConfig.NEW_BOOKING_TOPIC, resp)) throw new InternalServerException();
         return resp;
     }
@@ -138,11 +144,29 @@ public class BookingService extends com.dattp.order.service.Service {
 
     private UserOverview getEmployeeInfo() {
         UserOverview userInfo = new UserOverview();
-        userInfo.setId(jwtService.getUserId());
-        userInfo.setMail(jwtService.getMail());
-        userInfo.setFullname(jwtService.getFullname());
-        userInfo.setUsername(jwtService.getUsername());
+        try {
+            userInfo.setId(jwtService.getUserId());
+            userInfo.setMail(jwtService.getMail());
+            userInfo.setFullname(jwtService.getFullname());
+            userInfo.setUsername(jwtService.getUsername());
+        } catch (Exception e) {
+            log.debug("=======> getEmployeeInfo:{}", e.getMessage());
+        }
         return userInfo;
+    }
+
+
+    //===============   SCHEDULE   =======================
+
+    public void processOrderNotPaid() {
+        List<Long> bookingIds = bookingStorage.findAllNotPaid();
+        bookingIds.forEach(id -> {
+            try {
+                self.cancelBooking(id);
+            } catch (Exception e) {
+                log.error("=======> processOrderNotPaid:{}", e.getMessage());
+            }
+        });
     }
 
     //================================= KAFKA =======================================

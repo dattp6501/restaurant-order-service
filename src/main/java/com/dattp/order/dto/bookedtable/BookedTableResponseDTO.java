@@ -41,6 +41,8 @@ public class BookedTableResponseDTO {
         BeanUtils.copyProperties(bt, this);
         this.createAt = DateUtils.convertToLocalDateTime(bt.getCreateAt());
         this.updateAt = DateUtils.convertToLocalDateTime(bt.getUpdateAt());
+        this.from = DateUtils.convertToLocalDateTime(bt.getFrom());
+        this.to = DateUtils.convertToLocalDateTime(bt.getTo());
     }
     @Override
     public boolean equals(Object obj) {

@@ -1,21 +1,14 @@
 package com.dattp.order.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
+import com.dattp.order.dto.bookeddish.BookedDishRequestDTO;
 import com.dattp.order.entity.state.BookedDishState;
+import com.dattp.order.utils.DateUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -25,24 +18,25 @@ import java.util.Objects;
 public class BookedDish {
     @Column(name = "state")
     private BookedDishState state;
-    
+
     @Column(name = "id")
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="dish_id")
+    @Column(name = "dish_id")
     private Long dishId;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "imege")
+    @Column(name = "image")
     private String image;
 
-    @Column(name="total")
+    @Column(name = "total")
     private Integer total;
 
-    @Column(name="price")
+    @Column(name = "price")
     private Float price;
 
     @Column(name = "create_at")
@@ -56,15 +50,35 @@ public class BookedDish {
     @JsonIgnore
     private Booking booking;
 
-    public BookedDish(){}
+    @PrePersist
+    protected void onCreate() {
+        this.createAt = this.updateAt = DateUtils.getCurrentMils();
+    }
+    @PreUpdate
+    protected void onUpdate() {
+        this.updateAt = DateUtils.getCurrentMils();
+    }
+
+    public BookedDish() {
+        super();
+    }
+
+    public BookedDish(BookedDishRequestDTO dto) {
+        this.copyProperties(dto);
+        this.state = BookedDishState.PROCESSING;
+    }
+
+    public void copyProperties(BookedDishRequestDTO dto) {
+        BeanUtils.copyProperties(dto, this);
+    }
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof BookedDish)) return false;
+        if (!(obj instanceof BookedDish)) return false;
         BookedDish other = (BookedDish) obj;
-        if(Objects.equals(this.id, other.id)) return Objects.equals(this.id, other.id);
+        if (Objects.equals(this.id, other.id)) return Objects.equals(this.id, other.id);
         // dish was placed on the menu
-        return Objects.equals(this.booking.getId(), other.booking.getId()) &&this.dishId==other.dishId;
+        return Objects.equals(this.booking.getId(), other.booking.getId()) && this.dishId == other.dishId;
     }
 
 }

@@ -1,21 +1,19 @@
 package com.dattp.order.entity;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import javax.persistence.*;
-
 import com.dattp.order.dto.booking.BookingCreateDTO;
 import com.dattp.order.dto.booking.BookingResponseDTO;
 import com.dattp.order.entity.state.BookingState;
 import com.dattp.order.utils.DateUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
+
+import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "BOOKING")
@@ -23,7 +21,9 @@ import org.springframework.beans.BeanUtils;
 @Setter
 @AllArgsConstructor
 public class Booking {
-    @Column(name="id") @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "state")
@@ -33,7 +33,7 @@ public class Booking {
     @Column(name = "customer_id")
     private Long CustomerId;
 
-    @Column(name="custemer_fullname")
+    @Column(name = "custemer_fullname")
     private String custemerFullname;
 
     @Column(name = "from_")
@@ -61,21 +61,30 @@ public class Booking {
     @Column(name = "update_at")
     private Long updateAt = DateUtils.getCurrentMils();
 
-    @OneToMany(mappedBy = "booking", cascade ={CascadeType.ALL})
+    @OneToMany(mappedBy = "booking", cascade = {CascadeType.ALL})
     private List<BookedTable> bookedTables;
 
-    @OneToMany(mappedBy="booking", cascade={CascadeType.ALL})
+    @OneToMany(mappedBy = "booking", cascade = {CascadeType.ALL})
     private List<BookedDish> dishs;
 
-    public Booking(){
+    @PrePersist
+    protected void onCreate() {
+        this.createAt = this.updateAt = DateUtils.getCurrentMils();
+    }
+    @PreUpdate
+    protected void onUpdate() {
+        this.updateAt = DateUtils.getCurrentMils();
+    }
+
+    public Booking() {
         super();
     }
 
-    public Booking(BookingCreateDTO dto){
+    public Booking(BookingCreateDTO dto) {
         copyProperties(dto);
     }
 
-    public void copyProperties(BookingCreateDTO dto){
+    public void copyProperties(BookingCreateDTO dto) {
         BeanUtils.copyProperties(dto, this);
         this.from = DateUtils.getMills(dto.getFrom());
         this.to = DateUtils.getMills(dto.getTo());
@@ -83,19 +92,27 @@ public class Booking {
         this.paid = false;
         this.deposits = 0F;
         // lay thong tin ban dat
-        if(Objects.nonNull(dto.getBookedTables()))
+        if (Objects.nonNull(dto.getBookedTables()))
             this.bookedTables = dto.getBookedTables().stream()
-              .map(e->{
-                  BookedTable bt = new BookedTable(e, this.from, this.to);
-                  bt.setBooking(this);//map to gen booking id db
-                  return bt;
-              })
-              .collect(Collectors.toList());
+                .map(e -> {
+                    BookedTable bt = new BookedTable(e, this.from, this.to);
+                    bt.setBooking(this);//map to gen booking id db
+                    return bt;
+                })
+                .collect(Collectors.toList());
+        if (Objects.nonNull(dto.getDishs())) {
+            this.dishs = dto.getDishs().stream().map(dr -> {
+                    BookedDish bd = new BookedDish(dr);
+                    bd.setBooking(this);
+                    return bd;
+                })
+                .collect(Collectors.toList());
+        }
     }
 
-    public void copyProperties(BookingResponseDTO dto){
+    public void copyProperties(BookingResponseDTO dto) {
         BeanUtils.copyProperties(dto, this);
-        if(Objects.isNull(dto.getBookedTables()) || dto.getBookedTables().isEmpty()){
+        if (Objects.isNull(dto.getBookedTables()) || dto.getBookedTables().isEmpty()) {
             this.state = BookingState.CANCEL;
         }
         this.updateAt = DateUtils.getCurrentMils();

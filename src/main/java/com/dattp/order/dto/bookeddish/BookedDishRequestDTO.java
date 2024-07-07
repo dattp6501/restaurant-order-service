@@ -2,6 +2,7 @@ package com.dattp.order.dto.bookeddish;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,6 +20,12 @@ public class BookedDishRequestDTO {
     @Min(value = 1, message = "Số lướng món(total) phải lớn hơn 0")
     private int total;
 
-//    @NotEmpty(message = "Tên món ắn(name) không được để trống")
+    @NotEmpty(message = "Tên món ắn(name) không được để trống")
     private String name;
+
+    @NotNull(message = "price không được để trống")
+    private Float price;
+
+    @NotNull(message = "image không được để trống")
+    private String image;
 }

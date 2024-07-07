@@ -60,6 +60,15 @@ public class BookedTable {
     @Column(name = "update_at")
     private Long updateAt = DateUtils.getCurrentMils();
 
+    @PrePersist
+    protected void onCreate() {
+        this.createAt = this.updateAt = DateUtils.getCurrentMils();
+    }
+    @PreUpdate
+    protected void onUpdate() {
+        this.updateAt = DateUtils.getCurrentMils();
+    }
+
     public BookedTable() {
         super();
     }

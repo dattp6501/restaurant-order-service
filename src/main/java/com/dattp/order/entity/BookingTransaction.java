@@ -16,7 +16,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class BookingTransaction {
-    @Column(name="id") @Id
+    @Column(name = "id")
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -34,6 +35,12 @@ public class BookingTransaction {
 
     @Column(name = "create_at")
     private Long createAt = DateUtils.getCurrentMils();
+
+    @PrePersist
+    protected void onCreate() {
+        this.createAt = DateUtils.getCurrentMils();
+    }
+
     public BookingTransaction() {
         super();
     }
