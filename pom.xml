@@ -229,6 +229,11 @@
 <!--			<version>5.4.24.Final</version>-->
 <!--		</dependency>-->
 		<!--		-->
+		<!-- Connect pool-->
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
