@@ -2,6 +2,7 @@ package com.dattp.order.config.kafka;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import com.dattp.order.dto.booking.BookingResponseDTO;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -33,6 +34,9 @@ public class ComsumerKafkaConfig {
     private String SASL_MECHANISM;
     @Value("${spring.kafka.properties.security.protocol}")
     private String SECURITY_PROTOCOL;
+
+    @Value("${spring.kafka.properties.sasl.trust_store_password}")
+    private String TRUST_STORE_PASSWORD;
     //
     public Map<String, Object> comsumerConfigJSON(){
         Map<String,Object> props = new HashMap<>();
@@ -46,6 +50,10 @@ public class ComsumerKafkaConfig {
             props.put("sasl.jaas.config", SASL_JAAS_CONFIG);
             props.put("sasl.mechanism", SASL_MECHANISM);
             props.put("security.protocol", SECURITY_PROTOCOL);
+            props.put("ssl.endpoint.identification.algorithm", "");
+            props.put("ssl.truststore.type", "jks");
+            props.put("ssl.truststore.location", Objects.requireNonNull(getClass().getClassLoader().getResource("client.truststore.jks")).getPath());
+            props.put("ssl.truststore.password", TRUST_STORE_PASSWORD);
         }
         return props;
     }
