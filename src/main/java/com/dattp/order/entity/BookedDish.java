@@ -12,7 +12,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "BOOKED_DISH")
+@Table(name = "BOOKED_DISH", schema = "\"order\"")
 @Setter
 @Getter
 public class BookedDish {

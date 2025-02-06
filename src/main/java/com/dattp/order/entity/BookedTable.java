@@ -14,7 +14,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "BOOKED_TABLE")
+@Table(name = "BOOKED_TABLE", schema = "\"order\"")
 @Getter
 @Setter
 @AllArgsConstructor

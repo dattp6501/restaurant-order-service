@@ -12,7 +12,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "BOOKING_TRANSACTION")
+@Table(name = "BOOKING_TRANSACTION", schema = "\"order\"")
 @Getter
 @Setter
 public class BookingTransaction {

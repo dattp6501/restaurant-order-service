@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="ORDER_DB@13.212.113.107" uuid="71582a3b-af0a-4bb9-a204-cca9005ce684">
-      <driver-ref>mysql.8</driver-ref>
+    <data-source source="LOCAL" name="restaurant@gw.dattpmars.com" uuid="28ffb5ac-b18f-4e4b-88ef-e2e84d5b5d14">
+      <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://13.212.113.107:3306/ORDER_DB</jdbc-url>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://gw.dattpmars.com:5432/restaurant</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />

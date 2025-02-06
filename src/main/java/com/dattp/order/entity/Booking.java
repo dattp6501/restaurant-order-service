@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "BOOKING")
+@Table(name = "BOOKING", schema = "\"order\"")
 @Getter
 @Setter
 @AllArgsConstructor
