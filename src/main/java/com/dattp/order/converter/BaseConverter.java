@@ -9,21 +9,21 @@ import javax.persistence.Converter;
 @Converter
 @Log4j2
 public abstract class BaseConverter<T> implements AttributeConverter<T, String> {
-    @Override
-    public String convertToDatabaseColumn(T data) {
-        if (null == data) {
-            return null;
-        }
-        return JSONUtils.toJson(data);
+  @Override
+  public String convertToDatabaseColumn(T data) {
+    if (null == data) {
+      return null;
     }
+    return JSONUtils.toJson(data);
+  }
 
-    @Override
-    public T convertToEntityAttribute(String dbData) {
-        if (null == dbData || dbData.isEmpty()) {
-            return null;
-        }
-        return JSONUtils.toEntity(dbData,getObjectType());
+  @Override
+  public T convertToEntityAttribute(String dbData) {
+    if (null == dbData || dbData.isEmpty()) {
+      return null;
     }
+    return JSONUtils.toEntity(dbData, getObjectType());
+  }
 
-    protected abstract Class<T> getObjectType();
+  protected abstract Class<T> getObjectType();
 }

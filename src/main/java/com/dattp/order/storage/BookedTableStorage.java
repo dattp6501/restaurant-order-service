@@ -9,22 +9,22 @@ import java.util.List;
 
 @Component
 public class BookedTableStorage extends Storage {
-    @Autowired
-    private BookedTableRepository bookedTableRepository;
+  @Autowired
+  private BookedTableRepository bookedTableRepository;
 
-    public List<BookedTable> saveAll(List<BookedTable> bookedTables) {
-        return bookedTableRepository.saveAll(bookedTables);
-    }
+  public List<BookedTable> saveAll(List<BookedTable> bookedTables) {
+    return bookedTableRepository.saveAll(bookedTables);
+  }
 
-    public BookedTable findById(Long id) {
-        return bookedTableRepository.findById(id).orElse(null);
-    }
+  public BookedTable findById(Long id) {
+    return bookedTableRepository.findById(id).orElse(null);
+  }
 
-    public BookedTable save(BookedTable bookedTable) {
-        return bookedTableRepository.save(bookedTable);
-    }
+  public BookedTable save(BookedTable bookedTable) {
+    return bookedTableRepository.save(bookedTable);
+  }
 
-    public boolean existsById(Long id){
-        return bookedTableRepository.existsById(id);
-    }
+  public boolean existsById(Long id) {
+    return bookedTableRepository.existsById(id);
+  }
 }

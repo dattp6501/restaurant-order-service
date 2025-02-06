@@ -13,14 +13,17 @@ import java.time.format.DateTimeFormatter;
 @Configuration
 @EnableScheduling
 public class Monitor {
-    @Autowired @Lazy private TelegramService telegramService;
-    @Scheduled(initialDelay = 2000, fixedDelay = 1200000)
-    public void isRunning(){
-        String message =
-            DateUtils.getcurrentLocalDateTime()
-                .plusHours(7)
-                .format(DateTimeFormatter.ofPattern("HH:mm:ss yyyy-MM-dd"))
-                +": ORDER ===> RUNNING";
-        telegramService.sendNotificatonMonitorSystem(message);
-    }
+  @Autowired
+  @Lazy
+  private TelegramService telegramService;
+
+  @Scheduled(initialDelay = 2000, fixedDelay = 1200000)
+  public void isRunning() {
+    String message =
+        DateUtils.getcurrentLocalDateTime()
+            .plusHours(7)
+            .format(DateTimeFormatter.ofPattern("HH:mm:ss yyyy-MM-dd"))
+            + ": ORDER ===> RUNNING";
+    telegramService.sendNotificatonMonitorSystem(message);
+  }
 }

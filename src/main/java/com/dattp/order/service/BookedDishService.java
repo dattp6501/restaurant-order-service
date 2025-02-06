@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BookedDishService extends com.dattp.order.service.Service {
-    @Autowired
-    private BookedDishStorage bookedDishStorage;
+  @Autowired
+  private BookedDishStorage bookedDishStorage;
 //    public void removeById(long id){
 //        bookedDishRepository.deleteById(id);
 //    }

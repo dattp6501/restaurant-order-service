@@ -1,30 +1,15 @@
 package com.dattp.order.controller;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-
-import javax.annotation.security.RolesAllowed;
-
-import com.dattp.order.anotation.docapi.AddAuthorizedDocAPI;
-import com.dattp.order.utils.DateUtils;
-import org.springframework.data.domain.Pageable;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import com.dattp.order.dto.PeriodTimeResponseDTO;
-import com.dattp.order.dto.PeriodsTimeBookedTableDTO;
-import com.dattp.order.dto.ResponseDTO;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/booking/booked_table")
 @CrossOrigin(origins = "*")
-public class BookedTableController extends Controller{
+public class BookedTableController extends Controller {
 
-    // get periad rent of the table
+  // get periad rent of the table
 //    @GetMapping("/get_all_period_rent_table")
 //    @AddAuthorizedDocAPI
 //    @RolesAllowed({"ROLE_ORDER_NEW","ROLE_ADMIN"})
@@ -39,7 +24,7 @@ public class BookedTableController extends Controller{
 //    }
 
 
-    //get all period rent of table from date_from to date_to
+  //get all period rent of table from date_from to date_to
 //    @GetMapping("/get_period_rent_table/{table_id}")
 //    @AddAuthorizedDocAPI
 //    @RolesAllowed({"ROLE_ORDER_NEW"})

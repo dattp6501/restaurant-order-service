@@ -4,11 +4,11 @@ import lombok.Data;
 
 @Data
 public class UserOverview {
-    private Long id;
+  private Long id;
 
-    private String fullname;
+  private String fullname;
 
-    private String username;
+  private String username;
 
-    private String mail;
+  private String mail;
 }

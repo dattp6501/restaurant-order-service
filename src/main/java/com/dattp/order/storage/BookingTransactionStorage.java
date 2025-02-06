@@ -7,9 +7,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-public class BookingTransactionStorage extends Storage{
-    @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.MANDATORY)
-    public void save(BookingTransaction bookingTransaction){
-        bookingTransactionRepository.save(bookingTransaction);
-    }
+public class BookingTransactionStorage extends Storage {
+  @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.MANDATORY)
+  public void save(BookingTransaction bookingTransaction) {
+    bookingTransactionRepository.save(bookingTransaction);
+  }
 }

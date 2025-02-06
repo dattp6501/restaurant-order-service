@@ -14,43 +14,55 @@ public class RedisKeyConfig {
   public static final String PREFIX_CART = PREFIX_ORDER + "cart::";
   public static final String PREFIX_CART_DISH = PREFIX_CART + "dish::";
   public static final String PREFIX_CART_TABLE = PREFIX_CART + "table::";
+
   //=====================================================================================
   //                                      KEY
   //=====================================================================================
   //================================== PRODUCT ==========================================
-  public static String genKeyAllDishOverview(){
+  public static String genKeyAllDishOverview() {
     return PREFIX_DISH + "overview";
   }
-  public static String genKeyDish(Long dishId){
+
+  public static String genKeyDish(Long dishId) {
     return PREFIX_DISH + dishId;
   }
 
-  public static String genKeyCommentDish(Long dishId){return PREFIX_DISH + dishId + "::comment";}
+  public static String genKeyCommentDish(Long dishId) {
+    return PREFIX_DISH + dishId + "::comment";
+  }
 
-  public static String genKeyAllTableOverview(){
+  public static String genKeyAllTableOverview() {
     return PREFIX_TABLE + "overview";
   }
-  public static String genKeyTable(Long tableId){
+
+  public static String genKeyTable(Long tableId) {
     return PREFIX_TABLE + tableId;
   }
-  public static String genKeyCommentTable(Long tableId){return PREFIX_TABLE + tableId + "::comment";}
+
+  public static String genKeyCommentTable(Long tableId) {
+    return PREFIX_TABLE + tableId + "::comment";
+  }
+
   //================================== AUTH ==========================================
-  public static String genKeyToken(Long userId){
+  public static String genKeyToken(Long userId) {
     return FREFIX_TOKEN + userId;
   }
 
   //================================== PRODUCT ==========================================
-  public static String genKeyCartDish(Long userId){
+  public static String genKeyCartDish(Long userId) {
     return PREFIX_CART_DISH + userId;
   }
-  public static String genKeyCartTable(Long userId){
+
+  public static String genKeyCartTable(Long userId) {
     return PREFIX_CART_TABLE + userId;
   }
+
   //================================== ORDER = =========================================
-  public static String genKeyListOrder(Long userId){
+  public static String genKeyListOrder(Long userId) {
     return PREFIX_ORDER + userId;
   }
-  public static String genKeyOrderDetail(Long userId, Long bookingId){
+
+  public static String genKeyOrderDetail(Long userId, Long bookingId) {
     return PREFIX_ORDER + userId + ":" + bookingId;
   }
 

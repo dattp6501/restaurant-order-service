@@ -16,32 +16,32 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class BookingTransaction {
-    @Column(name = "id")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Column(name = "id")
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(name = "action_type")
-    @Enumerated(EnumType.STRING)
-    private BookingActionType actionType;
+  @Column(name = "action_type")
+  @Enumerated(EnumType.STRING)
+  private BookingActionType actionType;
 
-    @Column(name = "employee_info", columnDefinition = "TEXT")
-    @Convert(converter = UserOverviewConverter.class)
-    private UserOverview userInfo;
+  @Column(name = "employee_info", columnDefinition = "TEXT")
+  @Convert(converter = UserOverviewConverter.class)
+  private UserOverview userInfo;
 
-    @Column(name = "booking_info", columnDefinition = "TEXT")
-    @Convert(converter = BookingOverviewConverter.class)
-    private BookingOverview bookingInfo;
+  @Column(name = "booking_info", columnDefinition = "TEXT")
+  @Convert(converter = BookingOverviewConverter.class)
+  private BookingOverview bookingInfo;
 
-    @Column(name = "create_at")
-    private Long createAt = DateUtils.getCurrentMils();
+  @Column(name = "create_at")
+  private Long createAt = DateUtils.getCurrentMils();
 
-    @PrePersist
-    protected void onCreate() {
-        this.createAt = DateUtils.getCurrentMils();
-    }
+  public BookingTransaction() {
+    super();
+  }
 
-    public BookingTransaction() {
-        super();
-    }
+  @PrePersist
+  protected void onCreate() {
+    this.createAt = DateUtils.getCurrentMils();
+  }
 }

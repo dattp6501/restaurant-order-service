@@ -9,34 +9,34 @@ import org.springframework.web.client.RestTemplate;
 
 @org.springframework.stereotype.Service
 public class Service {
-    @Autowired
-    @Lazy
-    protected BookedTableService bookedTableService;
-    @Autowired
-    @Lazy
-    protected BookedDishService bookedDishService;
-    @Autowired
-    @Lazy
-    protected JWTService jwtService;
-    @Autowired
-    @Lazy
-    protected KafkaService kafkaService;
-    @Autowired
-    @Lazy
-    protected RestTemplate restTemplate;
-    @Autowired
-    @Lazy
-    protected RedisService redisService;
+  @Autowired
+  @Lazy
+  protected BookedTableService bookedTableService;
+  @Autowired
+  @Lazy
+  protected BookedDishService bookedDishService;
+  @Autowired
+  @Lazy
+  protected JWTService jwtService;
+  @Autowired
+  @Lazy
+  protected KafkaService kafkaService;
+  @Autowired
+  @Lazy
+  protected RestTemplate restTemplate;
+  @Autowired
+  @Lazy
+  protected RedisService redisService;
 
 
-    @Autowired
-    @Lazy
-    protected TokenStorage tokenStorage;
-    @Autowired
-    @Lazy
-    protected BookingStorage bookingStorage;
-    @Autowired
-    @Lazy
-    protected BookingTransactionStorage bookingTransactionStorage;
+  @Autowired
+  @Lazy
+  protected TokenStorage tokenStorage;
+  @Autowired
+  @Lazy
+  protected BookingStorage bookingStorage;
+  @Autowired
+  @Lazy
+  protected BookingTransactionStorage bookingTransactionStorage;
 
 }

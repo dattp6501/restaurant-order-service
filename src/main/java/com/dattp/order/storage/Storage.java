@@ -10,11 +10,21 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Storage {
-  @Autowired @Lazy protected RedisService redisService;
+  @Autowired
+  @Lazy
+  protected RedisService redisService;
 
-  @Autowired @Lazy protected BookingTransactionStorage bookingTransactionStorage;
+  @Autowired
+  @Lazy
+  protected BookingTransactionStorage bookingTransactionStorage;
 
-  @Autowired @Lazy protected BookingRepository bookingRepository;
-  @Autowired @Lazy protected BookedDishRepository bookedDishRepository;
-  @Autowired @Lazy protected BookingTransactionRepository bookingTransactionRepository;
+  @Autowired
+  @Lazy
+  protected BookingRepository bookingRepository;
+  @Autowired
+  @Lazy
+  protected BookedDishRepository bookedDishRepository;
+  @Autowired
+  @Lazy
+  protected BookingTransactionRepository bookingTransactionRepository;
 }

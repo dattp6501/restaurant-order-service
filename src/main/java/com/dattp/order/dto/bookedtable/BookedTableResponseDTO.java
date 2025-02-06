@@ -14,41 +14,45 @@ import java.util.Objects;
 @Getter
 @Setter
 public class BookedTableResponseDTO {
-    private Long id;
-    private Long tableId;
-    private String name;
-    private BookedTableState state;
-    private Float price;
+  private Long id;
+  private Long tableId;
+  private String name;
+  private BookedTableState state;
+  private Float price;
 
-    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
-    private LocalDateTime from;
+  @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
+  private LocalDateTime from;
 
-    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
-    private LocalDateTime to;
+  @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
+  private LocalDateTime to;
 
-    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
-    private LocalDateTime createAt;
+  @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
+  private LocalDateTime createAt;
 
-    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
-    private LocalDateTime updateAt;
-    public BookedTableResponseDTO() {
-        super();
-    }
-    public BookedTableResponseDTO(BookedTable bt) {
-        copyProperties(bt);
-    }
-    public void copyProperties(BookedTable bt){
-        BeanUtils.copyProperties(bt, this);
-        this.createAt = DateUtils.convertToLocalDateTime(bt.getCreateAt());
-        this.updateAt = DateUtils.convertToLocalDateTime(bt.getUpdateAt());
-        this.from = DateUtils.convertToLocalDateTime(bt.getFrom());
-        this.to = DateUtils.convertToLocalDateTime(bt.getTo());
-    }
-    @Override
-    public boolean equals(Object obj) {
-        BookedTableResponseDTO other = (BookedTableResponseDTO) obj;
-        return Objects.equals(this.id, other.id);
-    }
+  @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
+  private LocalDateTime updateAt;
+
+  public BookedTableResponseDTO() {
+    super();
+  }
+
+  public BookedTableResponseDTO(BookedTable bt) {
+    copyProperties(bt);
+  }
+
+  public void copyProperties(BookedTable bt) {
+    BeanUtils.copyProperties(bt, this);
+    this.createAt = DateUtils.convertToLocalDateTime(bt.getCreateAt());
+    this.updateAt = DateUtils.convertToLocalDateTime(bt.getUpdateAt());
+    this.from = DateUtils.convertToLocalDateTime(bt.getFrom());
+    this.to = DateUtils.convertToLocalDateTime(bt.getTo());
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    BookedTableResponseDTO other = (BookedTableResponseDTO) obj;
+    return Objects.equals(this.id, other.id);
+  }
 
 
 }

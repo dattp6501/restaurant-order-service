@@ -9,8 +9,8 @@ import java.util.List;
 
 @Service
 public class BookedTableService extends com.dattp.order.service.Service {
-    @Autowired
-    private BookedTableStorage bookedTableStorage;
+  @Autowired
+  private BookedTableStorage bookedTableStorage;
 //    public List<PeriodsTimeBookedTableDTO> getPeriadrentAllTable(Date from, Date to, Pageable pageable){
 //        List<PeriodsTimeBookedTableDTO> list = new ArrayList<>();
 //        int lengthCur = -1;
@@ -27,24 +27,24 @@ public class BookedTableService extends com.dattp.order.service.Service {
 //        return list;
 //    }
 
-    public List<BookedTable> saveBookedTable(List<BookedTable> bookedTables) {
-        return bookedTableStorage.saveAll(bookedTables);
-    }
+  public List<BookedTable> saveBookedTable(List<BookedTable> bookedTables) {
+    return bookedTableStorage.saveAll(bookedTables);
+  }
 
-    public void update(BookedTable bookedTable) {
-        BookedTable bookedTableSrc = bookedTableStorage.findById(bookedTable.getId());
-        if (bookedTableSrc == null) return;
-        if (bookedTable.getPrice() > 0) bookedTableSrc.setPrice(bookedTable.getPrice());
-        if (!bookedTable.getName().isEmpty()) bookedTableSrc.setName(bookedTable.getName());
-        bookedTableSrc.setState(bookedTable.getState());
-        bookedTableStorage.save(bookedTableSrc);
-    }
+  public void update(BookedTable bookedTable) {
+    BookedTable bookedTableSrc = bookedTableStorage.findById(bookedTable.getId());
+    if (bookedTableSrc == null) return;
+    if (bookedTable.getPrice() > 0) bookedTableSrc.setPrice(bookedTable.getPrice());
+    if (!bookedTable.getName().isEmpty()) bookedTableSrc.setName(bookedTable.getName());
+    bookedTableSrc.setState(bookedTable.getState());
+    bookedTableStorage.save(bookedTableSrc);
+  }
 
 //    public boolean existsById(long id) {
 //        return bookedTableStorage.existsById(id);
 //    }
 
-    // neu co ban da duoc dat trong khoang thoi gian nay thi tra ve true, nguoc lai tra ve false
+  // neu co ban da duoc dat trong khoang thoi gian nay thi tra ve true, nguoc lai tra ve false
 //    public boolean isFreetime(BookedTable bookedTable) {
 //        List<Object[]> list = bookedTableRepository.findPeriodRent(bookedTable.getFrom(), bookedTable.getTo(), bookedTable.getTableId());
 //        if (list == null || list.isEmpty()) return true;

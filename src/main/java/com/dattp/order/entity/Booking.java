@@ -21,101 +21,102 @@ import java.util.stream.Collectors;
 @Setter
 @AllArgsConstructor
 public class Booking {
-    @Column(name = "id")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Column(name = "id")
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(name = "state")
-    @Enumerated(EnumType.STRING)
-    private BookingState state;
+  @Column(name = "state")
+  @Enumerated(EnumType.STRING)
+  private BookingState state;
 
-    @Column(name = "customer_id")
-    private Long CustomerId;
+  @Column(name = "customer_id")
+  private Long CustomerId;
 
-    @Column(name = "custemer_fullname")
-    private String custemerFullname;
+  @Column(name = "custemer_fullname")
+  private String custemerFullname;
 
-    @Column(name = "from_")
-    // @CreatedDate
-    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
-    private Long from;
+  @Column(name = "from_")
+  // @CreatedDate
+  @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
+  private Long from;
 
-    @Column(name = "to_")
-    // @CreatedDate
-    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
-    private Long to;
+  @Column(name = "to_")
+  // @CreatedDate
+  @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
+  private Long to;
 
-    @Column(name = "deposits")
-    private Float deposits;
+  @Column(name = "deposits")
+  private Float deposits;
 
-    @Column(name = "paid")
-    private Boolean paid;
+  @Column(name = "paid")
+  private Boolean paid;
 
-    @Column(name = "desciption")
-    private String description;
+  @Column(name = "desciption")
+  private String description;
 
-    @Column(name = "create_at")
-    private Long createAt = DateUtils.getCurrentMils();
+  @Column(name = "create_at")
+  private Long createAt = DateUtils.getCurrentMils();
 
-    @Column(name = "update_at")
-    private Long updateAt = DateUtils.getCurrentMils();
+  @Column(name = "update_at")
+  private Long updateAt = DateUtils.getCurrentMils();
 
-    @OneToMany(mappedBy = "booking", cascade = {CascadeType.ALL})
-    private List<BookedTable> bookedTables;
+  @OneToMany(mappedBy = "booking", cascade = {CascadeType.ALL})
+  private List<BookedTable> bookedTables;
 
-    @OneToMany(mappedBy = "booking", cascade = {CascadeType.ALL})
-    private List<BookedDish> dishs;
+  @OneToMany(mappedBy = "booking", cascade = {CascadeType.ALL})
+  private List<BookedDish> dishs;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createAt = this.updateAt = DateUtils.getCurrentMils();
+  public Booking() {
+    super();
+  }
+
+  public Booking(BookingCreateDTO dto) {
+    copyProperties(dto);
+  }
+
+  @PrePersist
+  protected void onCreate() {
+    this.createAt = this.updateAt = DateUtils.getCurrentMils();
+  }
+
+  @PreUpdate
+  protected void onUpdate() {
+    this.updateAt = DateUtils.getCurrentMils();
+  }
+
+  public void copyProperties(BookingCreateDTO dto) {
+    BeanUtils.copyProperties(dto, this);
+    this.from = DateUtils.getMills(dto.getFrom());
+    this.to = DateUtils.getMills(dto.getTo());
+    this.state = BookingState.NEW;
+    this.paid = false;
+    this.deposits = 0F;
+    // lay thong tin ban dat
+    if (Objects.nonNull(dto.getBookedTables()))
+      this.bookedTables = dto.getBookedTables().stream()
+          .map(e -> {
+            BookedTable bt = new BookedTable(e, this.from, this.to);
+            bt.setBooking(this);//map to gen booking id db
+            return bt;
+          })
+          .collect(Collectors.toList());
+    if (Objects.nonNull(dto.getDishs())) {
+      this.dishs = dto.getDishs().stream().map(dr -> {
+            BookedDish bd = new BookedDish(dr);
+            bd.setBooking(this);
+            return bd;
+          })
+          .collect(Collectors.toList());
     }
-    @PreUpdate
-    protected void onUpdate() {
-        this.updateAt = DateUtils.getCurrentMils();
-    }
+  }
 
-    public Booking() {
-        super();
+  public void copyProperties(BookingResponseDTO dto) {
+    BeanUtils.copyProperties(dto, this);
+    if (Objects.isNull(dto.getBookedTables()) || dto.getBookedTables().isEmpty()) {
+      this.state = BookingState.CANCEL;
     }
-
-    public Booking(BookingCreateDTO dto) {
-        copyProperties(dto);
-    }
-
-    public void copyProperties(BookingCreateDTO dto) {
-        BeanUtils.copyProperties(dto, this);
-        this.from = DateUtils.getMills(dto.getFrom());
-        this.to = DateUtils.getMills(dto.getTo());
-        this.state = BookingState.NEW;
-        this.paid = false;
-        this.deposits = 0F;
-        // lay thong tin ban dat
-        if (Objects.nonNull(dto.getBookedTables()))
-            this.bookedTables = dto.getBookedTables().stream()
-                .map(e -> {
-                    BookedTable bt = new BookedTable(e, this.from, this.to);
-                    bt.setBooking(this);//map to gen booking id db
-                    return bt;
-                })
-                .collect(Collectors.toList());
-        if (Objects.nonNull(dto.getDishs())) {
-            this.dishs = dto.getDishs().stream().map(dr -> {
-                    BookedDish bd = new BookedDish(dr);
-                    bd.setBooking(this);
-                    return bd;
-                })
-                .collect(Collectors.toList());
-        }
-    }
-
-    public void copyProperties(BookingResponseDTO dto) {
-        BeanUtils.copyProperties(dto, this);
-        if (Objects.isNull(dto.getBookedTables()) || dto.getBookedTables().isEmpty()) {
-            this.state = BookingState.CANCEL;
-        }
-        this.updateAt = DateUtils.getCurrentMils();
-        //cap nhat lai thong tin ban da dat
-    }
+    this.updateAt = DateUtils.getCurrentMils();
+    //cap nhat lai thong tin ban da dat
+  }
 }

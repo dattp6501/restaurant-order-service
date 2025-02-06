@@ -16,20 +16,20 @@ import java.time.format.DateTimeFormatter;
 @EnableSwagger2
 @EnableWebMvc
 @EnableScheduling
-public class OrderApplication{
-	public static void main(String[] args){
-		SpringApplication.run(OrderApplication.class, args);
-	}
+public class OrderApplication {
+  public static void main(String[] args) {
+    SpringApplication.run(OrderApplication.class, args);
+  }
 
-	@Bean
-	public CommandLineRunner CommandLineRunnerBean(TelegramService telegramService) {
-		return (args) -> {
-			String message =
-				DateUtils.getcurrentLocalDateTime()
-					.plusHours(7)
-					.format(DateTimeFormatter.ofPattern("HH:mm:ss yyyy-MM-dd"))
-					+": ORDER ===> STARTED";
-			telegramService.sendNotificatonMonitorSystem(message);
-		};
-	}
+  @Bean
+  public CommandLineRunner CommandLineRunnerBean(TelegramService telegramService) {
+    return (args) -> {
+      String message =
+          DateUtils.getcurrentLocalDateTime()
+              .plusHours(7)
+              .format(DateTimeFormatter.ofPattern("HH:mm:ss yyyy-MM-dd"))
+              + ": ORDER ===> STARTED";
+      telegramService.sendNotificatonMonitorSystem(message);
+    };
+  }
 }

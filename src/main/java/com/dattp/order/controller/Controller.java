@@ -8,8 +8,14 @@ import org.springframework.context.annotation.Lazy;
 
 @org.springframework.stereotype.Controller
 public class Controller {
-  @Autowired @Lazy protected JWTService jwtService;
+  @Autowired
+  @Lazy
+  protected JWTService jwtService;
 
-  @Autowired @Lazy protected BookingService bookingService;
-  @Autowired @Lazy protected BookedTableService bookedTableService;
+  @Autowired
+  @Lazy
+  protected BookingService bookingService;
+  @Autowired
+  @Lazy
+  protected BookedTableService bookedTableService;
 }

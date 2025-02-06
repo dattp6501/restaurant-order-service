@@ -8,35 +8,37 @@ import org.springframework.beans.BeanUtils;
 
 @Data
 public class BookingOverview {
-    private Long id;
+  private Long id;
 
-    private BookingState state;
+  private BookingState state;
 
-    private Long CustomerId;
+  private Long CustomerId;
 
-    private String custemerFullname;
+  private String custemerFullname;
 
-    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
-    private Long from;
+  @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
+  private Long from;
 
-    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
-    private Long to;
+  @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
+  private Long to;
 
-    private Float deposits;
+  private Float deposits;
 
-    private Boolean paid;
+  private Boolean paid;
 
-    private String description;
+  private String description;
 
-    private Long createAt;
+  private Long createAt;
 
-    public BookingOverview(){
-        super();
-    }
-    public BookingOverview(Booking booking){
-        copyProperties(booking);
-    }
-    public void copyProperties(Booking booking){
-        BeanUtils.copyProperties(booking, this);
-    }
+  public BookingOverview() {
+    super();
+  }
+
+  public BookingOverview(Booking booking) {
+    copyProperties(booking);
+  }
+
+  public void copyProperties(Booking booking) {
+    BeanUtils.copyProperties(booking, this);
+  }
 }

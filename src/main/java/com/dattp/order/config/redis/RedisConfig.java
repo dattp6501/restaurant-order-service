@@ -45,9 +45,10 @@ public class RedisConfig {
     return template;
   }
 
-  private static class JSONCustomRedisSerializer<T> implements RedisSerializer<T>{
+  private static class JSONCustomRedisSerializer<T> implements RedisSerializer<T> {
     private final Class<T> type;
-    public JSONCustomRedisSerializer(Class<T> tClass){
+
+    public JSONCustomRedisSerializer(Class<T> tClass) {
       this.type = tClass;
     }
 

@@ -6,12 +6,13 @@ import java.util.*;
 
 public class MutableHttpServletRequest extends HttpServletRequestWrapper {
   private final Map<String, Object> customHeaders;
+
   public MutableHttpServletRequest(HttpServletRequest request) {
     super(request);
     this.customHeaders = new HashMap<String, Object>();
   }
 
-  public void putHeader(String name, Object value){
+  public void putHeader(String name, Object value) {
     this.customHeaders.put(name, value);
   }
 
@@ -19,7 +20,7 @@ public class MutableHttpServletRequest extends HttpServletRequestWrapper {
   public String getHeader(String name) {
     // check the custom headers first
     Object headerValue = customHeaders.get(name);
-    if (headerValue != null){
+    if (headerValue != null) {
       return (String) headerValue;
     }
     // else return from into the original wrapped object

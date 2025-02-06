@@ -14,36 +14,41 @@ import java.util.Objects;
 @Getter
 @Setter
 public class BookedDishResponseDTO {
-    private BookedDishState state;
+  private BookedDishState state;
 
-    private Long id;
+  private Long id;
 
-    private Long dishId;
+  private Long dishId;
 
-    private Integer total;
+  private Integer total;
 
-    private Float price;
+  private Float price;
 
-    private String name;
-    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
-    private LocalDateTime createAt;
+  private String name;
+  @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
+  private LocalDateTime createAt;
 
-    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
-    private LocalDateTime updateAt;
-    public BookedDishResponseDTO() {super();}
+  @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
+  private LocalDateTime updateAt;
 
-    public BookedDishResponseDTO(BookedDish bd){
-        copyProperties(bd);
-    }
-    public void copyProperties(BookedDish bd){
-        BeanUtils.copyProperties(bd, this);
-        this.createAt = DateUtils.convertToLocalDateTime(bd.getCreateAt());
-        this.updateAt = DateUtils.convertToLocalDateTime(bd.getUpdateAt());
-    }
-    @Override
-    public boolean equals(Object obj) {
-        if(!(obj instanceof BookedDishResponseDTO)) return false;
-        BookedDishResponseDTO other = (BookedDishResponseDTO) obj;
-        return Objects.equals(id, other.id);
-    }
+  public BookedDishResponseDTO() {
+    super();
+  }
+
+  public BookedDishResponseDTO(BookedDish bd) {
+    copyProperties(bd);
+  }
+
+  public void copyProperties(BookedDish bd) {
+    BeanUtils.copyProperties(bd, this);
+    this.createAt = DateUtils.convertToLocalDateTime(bd.getCreateAt());
+    this.updateAt = DateUtils.convertToLocalDateTime(bd.getUpdateAt());
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof BookedDishResponseDTO)) return false;
+    BookedDishResponseDTO other = (BookedDishResponseDTO) obj;
+    return Objects.equals(id, other.id);
+  }
 }

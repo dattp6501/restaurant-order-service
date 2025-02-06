@@ -15,38 +15,36 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfig {
 
-    @Autowired
-    private JWTAuthenticationFilter jwtAuthenticationFilter;
+  private static final String[] publicPath = {
+      "/swagger-resources/**",
+      "/swagger-ui.html",
+      "/v2/api-docs",
+      "/webjars/**",
+      "/swagger-ui/**",
+      "/isRunning",
+      "/api/order/user/**",
+      "/api/order/manage/**"
+  };
+  @Autowired
+  private JWTAuthenticationFilter jwtAuthenticationFilter;
 
-    private static final String[] publicPath = {
-        "/swagger-resources/**",
-        "/swagger-ui.html",
-        "/v2/api-docs",
-        "/webjars/**",
-        "/swagger-ui/**",
-        "/isRunning",
-        "/api/order/user/**",
-        "/api/order/manage/**"
-    };
-
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 //        http.csrf(AbstractHttpConfigurer::disable);
-        http
-            .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                .antMatchers(publicPath).permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            )
-            .headers(headers -> headers.frameOptions().disable())
-            .csrf(csrf -> csrf
-                .ignoringAntMatchers("/**")
-            );
-        return http.build();
-    }
+    http
+        .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(auth -> auth
+            .antMatchers(publicPath).permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        )
+        .headers(headers -> headers.frameOptions().disable())
+        .csrf(csrf -> csrf
+            .ignoringAntMatchers("/**")
+        );
+    return http.build();
+  }
 
 //    @Bean
 //    public WebMvcConfigurer corsConfigurer() {

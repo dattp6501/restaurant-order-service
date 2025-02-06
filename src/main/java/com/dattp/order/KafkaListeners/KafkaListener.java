@@ -8,6 +8,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class KafkaListener {
-    @Autowired @Lazy protected TelegramService telegramService;
-    @Autowired @Lazy protected BookingService bookingService;
+  @Autowired
+  @Lazy
+  protected TelegramService telegramService;
+  @Autowired
+  @Lazy
+  protected BookingService bookingService;
 }

@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BookedDishStorage extends Storage {
-    @Autowired
-    private BookedDishRepository bookedDishRepository;
+  @Autowired
+  private BookedDishRepository bookedDishRepository;
 
-    public BookedDish save(BookedDish bookedDish) {
-        return bookedDishRepository.save(bookedDish);
-    }
+  public BookedDish save(BookedDish bookedDish) {
+    return bookedDishRepository.save(bookedDish);
+  }
 
-    public BookedDish findById(Long id) {
-        return bookedDishRepository.findById(id).orElseThrow(null);
-    }
+  public BookedDish findById(Long id) {
+    return bookedDishRepository.findById(id).orElseThrow(null);
+  }
 }
